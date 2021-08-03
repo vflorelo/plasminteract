@@ -19,27 +19,6 @@ else if(count($organism_arr)==0){
 }
 $search_term   = $_POST['search_term'];
 $search_str = "\"".clean_search_term($search_term)."\"";
-$full_search_str = urlencode($organism_str.$search_str);
-$curl_handle      = curl_init();
-curl_setopt($curl_handle,CURLOPT_URL,"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?api_key=42bcbdb562c2d7210f2287de0a7e6b0c7d09&db=pubmed&term=$full_search_str&retmode=xml");
-curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,10);
-curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,10);
-$pubmed_response = curl_exec($curl_handle);
-if (empty($pubmed_response)){
-  $local_response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
-                    "<eSearchResult>\n".
-                    "  <query_str>1</query_str>\n".
-                    "  <organism_name>$organism_name</organism_name>\n".
-                    "  <search_term>$search_term</search_term>\n".
-                    "  <full_search_str>$full_search_str</full_ search_str>\n".
-                    "</eSearchResult>";
-  print $local_response ;
-  }
-else{
-  $local_response   = new SimpleXMLElement($pubmed_response);
-  $query_str        = $local_response->addChild("query_str","0");
-  $accession_number = $local_response->addChild("organism_name","$organism_name");
-  $accession_number = $local_response->addChild("search_term","$search_term");
-  print $local_response->asXML();
-  }
+$xml_str = shell_exec("python3 search_elsevier.py $search_str");
+print $xml_str;
 ?>

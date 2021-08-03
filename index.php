@@ -16,6 +16,7 @@
     #show_hide_button {position: absolute; right:0 ; bottom:0 ; z-index: 500}
     .overflowed{height:100%;overflow-y:auto}
     .full{height:100%}
+    .half{height:50%}
     .third{height:33%}
   </style>
 </head>
@@ -42,42 +43,40 @@
   </div>
 </div>
 <div class="row" id="container">
-  <div class="col-2 full">
+  <div class="col-3 full">
     <div class="card full">
       <div class="card card-header bg-warning">Accession number list</div>
       <div class="card card-body overflowed" id="accession_number_list"></div>
     </div>
   </div>
-  <div class="col-3 full">
-    <div class="row third">
-      <div class="col-12 full">
+  <div class="col-9 full">
+    <div class="row half">
+      <div class="col-6 full">
         <div class="card full">
           <div class="card card-header bg-primary">Links</div>
           <div class="card card-body overflowed" id="link_list"></div>
         </div>
       </div>
+      <div class="col-6 full">
+        <div class="card full">
+          <div class="card card-header bg-info">Elsevier info</div>
+          <div class="card card-body overflowed" id="elsevier_list"></div>
+        </div>
+      </div>
     </div>
-    <div class="row third">
-      <div class="col-12 full">
+    <div class="row half">
+      <div class="col-6 full">
         <div class="card full">
           <div class="card card-header bg-info">PubMed info</div>
           <div class="card card-body overflowed" id="pmid_list"></div>
         </div>
       </div>
-    </div>
-    <div class="row third">
-      <div class="col-12 full">
+      <div class="col-6 full">
         <div class="card full">
           <div class="card card-header bg-info">PubMed additional info</div>
           <div class="card card-body overflowed" id="pmid_list_2"></div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="col-7 full">
-    <div class="card full">
-      <div class="card card-header bg-secondary">PubMed Info</div>
-      <div class="card card-body overflowed" id="article_div"></div>
     </div>
   </div>
 </div>
@@ -129,6 +128,7 @@ function get_uniprot_acc(accession_number){
                   if (uniprot_accession != "" && gene_name == accession_number){
                     get_uniprot_description(uniprot_accession,accession_number);
                     search_pubmed(organism_name,protein_name);
+                    search_elsevier(organism_name,protein_name);
                     }
                   }
                 }
@@ -291,6 +291,43 @@ function search_pubmed(organism_name,search_term){
                 }
                 $("#pmid_list_2").html(html_str)
               }
+    })
+  }
+function search_elsevier(organism_name,search_term){
+  var form_data  = new FormData()       ;
+  var target_url = "search_elsevier.php" ;
+  form_data.append("organism_name", organism_name)  ;
+  form_data.append("search_term", search_term)  ;
+  $.ajax({
+    url: target_url,
+    dataType: 'script',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    complete: function (elsevier_results){
+                var elsevier_xml_data = elsevier_results.responseText ;
+								var xml_data         = $.parseXML(elsevier_xml_data);
+								$xml_data            = $(xml_data);
+                var query_str        = $xml_data.find("query_str").text();
+                var html_str = "";
+                var pii = "";
+                var link = "";
+                if(query_str==0){
+                  html_str = "<ul class=\"list-group\">\n"
+                  $xml_data.find("entry").each(function (){
+                    pii  = $(this).find("pii").text();
+                    link = $(this).find("pii").text();
+                    html_str += "  <li class=\"list-group-item\"><a href=\""+link+"\" target=\"_blank\">"+pii+"</a></li>\n";
+                    });
+                  html_str = "</ul>\n"
+                  }
+                else{
+                  html_str = "<div class=\"alert alert-warning\">No hits found</div>\n"
+                  }
+                $("#elsevier_list").html(html_str)
+                }
     })
   }
 function get_pubmed_info(pubmed_id){

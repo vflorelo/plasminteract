@@ -1,0 +1,10 @@
+2021-08-03 14:34:57,369 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 14:34:57,720 - elsapy.utils - INFO - Module loaded.
+2021-08-03 14:34:57,721 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 14:34:58,370 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 14:34:58,836 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 14:35:32,802 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 14:35:33,152 - elsapy.utils - INFO - Module loaded.
+2021-08-03 14:35:33,152 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 14:35:33,803 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 14:35:34,165 - elsapy.utils - INFO - Converting prism:coverDate
