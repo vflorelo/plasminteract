@@ -16,7 +16,7 @@
     #show_hide_button {position: absolute; right:0 ; bottom:0 ; z-index: 500}
     .overflowed{height:100%;overflow-y:auto}
     .full{height:100%}
-    .half{height:50%}
+    .third{height:33%}
   </style>
 </head>
 <body onload="resize_divs()">
@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="col-3 full">
-    <div class="row half">
+    <div class="row third">
       <div class="col-12 full">
         <div class="card full">
           <div class="card card-header bg-primary">Links</div>
@@ -57,11 +57,19 @@
         </div>
       </div>
     </div>
-    <div class="row half">
+    <div class="row third">
       <div class="col-12 full">
         <div class="card full">
           <div class="card card-header bg-info">PubMed info</div>
           <div class="card card-body overflowed" id="pmid_list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row third">
+      <div class="col-12 full">
+        <div class="card full">
+          <div class="card card-header bg-info">PubMed additional info</div>
+          <div class="card card-body overflowed" id="pmid_list_2"></div>
         </div>
       </div>
     </div>
@@ -116,8 +124,11 @@ function get_uniprot_acc(accession_number){
                 if(query_str==0){
                   var uniprot_accession = $xml_data.find("entry").children("accession").text();
                   var gene_name         = $xml_data.find("entry").children("gene").children("name").text();
+                  var protein_name      = $xml_data.find("entry").children("protein").children("submittedName").children("fullName").text();
+                  var organism_name     = $xml_data.find("entry").children("organism").children("name").text();
                   if (uniprot_accession != "" && gene_name == accession_number){
                     get_uniprot_description(uniprot_accession,accession_number);
+                    search_pubmed(organism_name,protein_name);
                     }
                   }
                 }
@@ -216,7 +227,7 @@ function get_pubmed_list(accession_number){
                 var accession_number = $xml_data.find("accession_number").text();
                 var html_str = "";
                 if(query_str==0){
-                  var num_hits = $xml_data.find("Count").text();
+                  var num_hits = $xml_data.children("eSearchResult").children("Count").text();
                   if (num_hits>=1){
                     html_str = "<ul class=\"list-group\">\n";
                     $xml_data.find("IdList").children("Id").each(function (){
@@ -236,6 +247,49 @@ function get_pubmed_list(accession_number){
                   html_str = "<div class=\"alert alert-danger\">Error, try again later</div>"
                 }
                 $("#pmid_list").html(html_str)
+              }
+    })
+  }
+function search_pubmed(organism_name,search_term){
+  var form_data  = new FormData()       ;
+  var target_url = "search_pubmed.php" ;
+  form_data.append("organism_name", organism_name)  ;
+  form_data.append("search_term", search_term)  ;
+  $.ajax({
+    url: target_url,
+    dataType: 'script',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    complete: function (eSearchResult){
+                var eSearchResult_xml_data = eSearchResult.responseText ;
+								var xml_data         = $.parseXML(eSearchResult_xml_data);
+								$xml_data            = $(xml_data);
+                var query_str        = $xml_data.find("query_str").text();
+                var html_str = "";
+                if(query_str==0){
+                  var num_hits = $xml_data.children("eSearchResult").children("Count").text();
+                  if (num_hits>=1){
+                    html_str = "<ul class=\"list-group\">\n";
+                    $xml_data.find("IdList").children("Id").each(function (){
+                      html_str += "  <li class=\"list-group-item list-group-item-info\">"+
+                                  "    <a href=\"https://pubmed.ncbi.nlm.nih.gov/"+$(this).text()+
+                                  "\" target=\"_blank\">"+$(this).text()+"</a>"+
+                                  "    <span class=\"bi bi-search\" onclick=\"get_pubmed_info("+$(this).text()+")\" ></span>"+
+                                  "  </li>\n";
+                    });
+                    html_str += "</ul>";
+                  }
+                  else{
+                    html_str = "<div class=\"alert alert-warning\">No hits found</div>"
+                  }
+                }
+                else{
+                  html_str = "<div class=\"alert alert-danger\">Error, try again later</div>"
+                }
+                $("#pmid_list_2").html(html_str)
               }
     })
   }
