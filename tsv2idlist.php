@@ -27,7 +27,7 @@ if (move_uploaded_file($tsv_tmp_file_name, "file.tsv")) {
       }
       $xml_str  .= "  </entry>\n";
     }
-    $xml_str  .= "</tsv2idlist>";
+    $xml_str  .= "</tsv2idlist>\n";
   }
 print $xml_str;
 ?>

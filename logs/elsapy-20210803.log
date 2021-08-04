@@ -8,3 +8,43 @@
 2021-08-03 14:35:33,152 - elsapy.elssearch - INFO - Module loaded.
 2021-08-03 14:35:33,803 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
 2021-08-03 14:35:34,165 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:01:50,343 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:01:50,701 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:01:50,701 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:01:51,344 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:01:51,766 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:06:46,345 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:06:46,691 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:06:46,692 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:06:47,346 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:06:47,668 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:07:02,913 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:07:03,254 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:07:03,254 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:07:03,914 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:07:04,357 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:09:22,973 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:09:23,312 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:09:23,312 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:09:23,974 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:09:24,296 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:10:28,064 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:10:28,413 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:10:28,413 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:10:29,065 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:10:29,372 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:10:42,812 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:10:43,160 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:10:43,160 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:10:43,813 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:10:44,221 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:10:51,797 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:10:52,149 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:10:52,149 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:10:52,798 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:10:53,129 - elsapy.utils - INFO - Converting prism:coverDate
+2021-08-03 15:12:35,538 - elsapy.elsclient - INFO - Module loaded.
+2021-08-03 15:12:35,876 - elsapy.utils - INFO - Module loaded.
+2021-08-03 15:12:35,876 - elsapy.elssearch - INFO - Module loaded.
+2021-08-03 15:12:36,539 - elsapy.elsclient - INFO - Sending GET request to https://api.elsevier.com/content/search/sciencedirect?query=Plasmodium+falciparum+AND+26S+proteasome+regulatory+subunit+RPN1
+2021-08-03 15:12:37,066 - elsapy.utils - INFO - Converting prism:coverDate
