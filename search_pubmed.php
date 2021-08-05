@@ -22,7 +22,7 @@ if($protein_name != ""){
 	$protein_str  = clean_search_term($protein_name);
 	}
 else{
-	$protein_str = ""
+	$protein_str = "";
 	}
 if(!empty($organism_str) && !empty($protein_str)){
 	$search_str   = "$organism_str \"$protein_str\"";

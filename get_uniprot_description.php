@@ -1,6 +1,5 @@
 <?php
 $uniprot_accession = $_POST['uniprot_accession'];
-$accession_number  = $_POST['accession_number'];
 $curl_handle      = curl_init();
 curl_setopt($curl_handle,CURLOPT_URL,"https://www.ebi.ac.uk/proteins/api/proteins?offset=0&size=1&accession=$uniprot_accession");
 curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,10);
@@ -22,7 +21,6 @@ if (empty($uniprot_response)){
 else{
   $local_response    = new SimpleXMLElement($uniprot_response);
   $query_str         = $local_response->addChild("query_str","0");
-  $accession_number  = $local_response->addChild("accession_number","$accession_number");
   $uniprot_accession = $local_response->addChild("uniprot_accession","$uniprot_accession");
   print $local_response->asXML();
   }
