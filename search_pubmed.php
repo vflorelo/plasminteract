@@ -44,9 +44,9 @@ if(!empty($organism_str) && !empty($protein_str)){
 	  }
 	else{
 	  $local_response   = new SimpleXMLElement($pubmed_response);
-	  $query_str        = $local_response->addChild("query_str","0");
-	  $accession_number = $local_response->addChild("organism_name","$organism_name");
-	  $accession_number = $local_response->addChild("search_term","$search_term");
+	  $local_response->addChild("query_str","0");
+	  $local_response->addChild("organism_name","$organism_name");
+	  $local_response->addChild("search_term","$search_term");
 	  print $local_response->asXML();
 	  }
 	}

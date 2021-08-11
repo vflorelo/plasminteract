@@ -99,27 +99,32 @@ function get_uniprot_accession(accession_number){
   clear_divs();
   spinner_str = "  <div id=\"pubmed_direct_status\" class=\"row\">\n"+
                 "    <div class=\"col-6\">\n"+
-                "      <div class=\"spinner-border text-primary\"></div>\n"+
+                "      <div class=\"spinner-border text-primary\" id=\"pubmed_direct_spinner\"></div>\n"+
                 "    </div>\n"+
                 "    <div class=\"col-6\">PubMed Direct search</div>\n"+
                 "  </div>\n"+
                 "  <div id=\"pubmed_xt_status\" class=\"row\">\n"+
                 "    <div class=\"col-6\">\n"+
-                "      <div class=\"spinner-border text-info\"></div>\n"+
+                "      <div class=\"spinner-border text-info\" id=\"pubmed_xt_spinner\"></div>\n"+
                 "    </div>\n"+
                 "    <div class=\"col-6\">PubMed extended search</div>\n"+
                 "  </div>\n"+
                 "  <div id=\"gene2pubmed_status\" class=\"row\">\n"+
                 "    <div class=\"col-6\">\n"+
-                "      <div class=\"spinner-border text-success\"></div>\n"+
+                "      <div class=\"spinner-border text-success\" id=\"gene2pubmed_spinner\"></div>\n"+
                 "    </div>\n"+
                 "    <div class=\"col-6\">gene2pubmed search</div>\n"+
                 "  </div>\n"+
                 "  <div id=\"uniprot_status\" class=\"row\">\n"+
                 "    <div class=\"col-6\">\n"+
-                "      <div class=\"spinner-border text-danger\"></div>\n"+
+                "      <div class=\"spinner-border text-danger\" id=\"uniprot_spinner\"></div>\n"+
                 "    </div>\n"+
                 "    <div class=\"col-6\">UniProt search</div>\n"+
+                "  <div id=\"scidir_status\" class=\"row\">\n"+
+                "    <div class=\"col-6\">\n"+
+                "      <div class=\"spinner-border text-warning\" id=\"scidir_spinner\"></div>\n"+
+                "    </div>\n"+
+                "    <div class=\"col-6\">Sciencedirect search</div>\n"+
                 "  </div>\n";
   $("#spinner_container").html(spinner_str);
   $("#status_dialog").modal('show');
@@ -144,7 +149,7 @@ function get_uniprot_accession(accession_number){
                 var gene_name        = $xml_data.find("gene").children("name").text().split(".")[0];
                 if(query_str==0){
                   var uniprot_accession = $xml_data.find("entry").children("accession").text();
-                  if (uniprot_accession != "" && gene_name == accession_number){
+                  if (uniprot_accession != ""){
                     get_uniprot_description(uniprot_accession);
                     var protein_gene_id   = $xml_data.find("entry").children('dbReference[type="GeneID"]').attr("id");
                     var protein_name      = $xml_data.find("entry").children("protein").children("submittedName").children("fullName").text();
@@ -152,9 +157,18 @@ function get_uniprot_accession(accession_number){
                     var organism_tax_id   = $xml_data.find("entry").children("organism").children('dbReference[type="NCBI Taxonomy"]').attr("id");
                     search_pubmed(organism_name,protein_name);
                     search_gene2pubmed(organism_tax_id,protein_gene_id);
+                    search_elsevier(organism_name,protein_name);
+                    check_progress();
+                    }
+                  else{
+                    $("#link_list").html("");
+                    $("#pubmed_direct_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                    $("#pubmed_xt_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                    $("#gene2pubmed_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                    $("#uniprot_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                    $("#scidir_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
                     }
                   }
-                check_progress();
                 }
     })
   }
@@ -226,6 +240,10 @@ function get_uniprot_description(uniprot_accession){
                   $("#link_list").html(list_html_str);
                   $("#uniprot_status").remove()
                   }
+                else{
+                  $("#link_list").html("");
+                  $("#uniprot_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                  }
                 }
     })
   }
@@ -271,12 +289,14 @@ function get_pubmed_list(accession_number){
                     html_str += "    </ul>\n"+
                                 "  </div>\n"+
                                 "</div>\n";
-                  }
+                    }
                   else{
                     html_str += "</div>\n";
                     }
+                  $("#pubmed_direct_status").remove();
                   }
                 else{
+                  $("#pubmed_direct_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
                   html_str = "<div class=\"accordion-item\">\n"+
                              "  <div class=\"list-group-item list-group-item-secondary\""+
                              "       data-bs-toggle=\"collapse\""+
@@ -288,7 +308,6 @@ function get_pubmed_list(accession_number){
                              "</div>\n";
                   }
                 $("#literature_accordion").append(html_str);
-                $("#pubmed_direct_status").remove();
               }
     })
   }
@@ -338,8 +357,10 @@ function search_pubmed(organism_name,protein_name){
                   else{
                     html_str += "</div>\n";
                     }
+                  $("#pubmed_xt_status").remove()
                   }
                 else{
+                  $("#pubmed_xt_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
                   html_str = "<div class=\"accordion-item\">\n"+
                              "  <div class=\"list-group-item list-group-item-secondary\""+
                              "       data-bs-toggle=\"collapse\""+
@@ -351,7 +372,6 @@ function search_pubmed(organism_name,protein_name){
                              "</div>\n";
                   }
                 $("#literature_accordion").append(html_str);
-                $("#pubmed_xt_status").remove()
               }
     })
   }
@@ -429,8 +449,10 @@ function search_gene2pubmed(organism_tax_id,protein_gene_id){
                   else{
                     html_str += "</div>\n";
                     }
+                  $("#gene2pubmed_status").remove()
                   }
                 else{
+                  $("#pubmed_direct_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
                   html_str = "<div class=\"accordion-item\">\n"+
                              "  <div class=\"list-group-item list-group-item-secondary\""+
                              "       data-bs-toggle=\"collapse\""+
@@ -451,47 +473,73 @@ function search_gene2pubmed(organism_tax_id,protein_gene_id){
                              "</div>\n";
                   }
                 $("#literature_accordion").append(html_str);
-                $("#gene2pubmed_status").remove()
                 }
     })
 }
-// function search_elsevier(organism_name,search_term){
-//   var form_data  = new FormData()       ;
-//   var target_url = "search_elsevier.php" ;
-//   form_data.append("organism_name", organism_name)  ;
-//   form_data.append("search_term", search_term)  ;
-//   $.ajax({
-//     url: target_url,
-//     dataType: 'script',
-//     cache: false,
-//     contentType: false,
-//     processData: false,
-//     data: form_data,
-//     type: 'post',
-//     complete: function (elsevier_results){
-//                 var elsevier_xml_data = elsevier_results.responseText ;
-// 								var xml_data         = $.parseXML(elsevier_xml_data);
-// 								$xml_data            = $(xml_data);
-//                 var query_str        = $xml_data.find("query_str").text();
-//                 var html_str = "";
-//                 var pii = "";
-//                 var link = "";
-//                 if(query_str==0){
-//                   html_str = "<ul class=\"list-group\">\n"
-//                   $xml_data.find("entry").each(function (){
-//                     pii  = $(this).find("pii").text();
-//                     link = $(this).find("pii").text();
-//                     html_str += "  <li class=\"list-group-item\"><a href=\""+link+"\" target=\"_blank\">"+pii+"</a></li>\n";
-//                     });
-//                   html_str = "</ul>\n"
-//                   }
-//                 else{
-//                   html_str = "<div class=\"alert alert-warning\">No hits found</div>\n"
-//                   }
-//                 $("#elsevier_list").html(html_str)
-//                 }
-//     })
-//   }
+function search_elsevier(organism_name,protein_name){
+  var form_data  = new FormData()       ;
+  var target_url = "search_elsevier.php" ;
+  form_data.append("organism_name", organism_name)  ;
+  form_data.append("protein_name", protein_name)  ;
+  $.ajax({
+    url: target_url,
+    dataType: 'script',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    complete: function (elsevier_results){
+                var elsevier_xml_data = elsevier_results.responseText ;
+								var xml_data         = $.parseXML(elsevier_xml_data);
+								$xml_data            = $(xml_data);
+                var query_str        = $xml_data.find("query_str").text();
+                var html_str = "";
+                var pii = "";
+                var link = "";
+                if(query_str==0){
+                  var num_hits = $xml_data.find("count").text();
+                  html_str = "<div class=\"accordion-item\">\n"+
+                             "  <div class=\"list-group-item list-group-item-info\""+
+                             "       data-bs-toggle=\"collapse\""+
+                             "        data-bs-target=\"#scidir_list\""+
+                             "        aria-expanded=\"true\""+
+                             "        aria-controls=\"scidir_list\" >Sciencedirect hits"+
+                             "    <span class=\"badge rounded-pill bg-secondary\">"+num_hits+"</span>\n"+
+                             "  </div>\n";
+                  if (num_hits>=1){
+                    html_str += "  <div id=\"scidir_list\" class=\"accordion-collapse collapse\" data-bs-parent=\"#literature_accordion\">\n"+
+                                "    <ul class=\"list-group\">\n";
+                    $xml_data.find("entry").each(function (){
+                      pii  = $(this).find("pii").text();
+                      link = $(this).find("link").text();
+                      html_str += "    <li class=\"list-group-item\"><a href=\""+link+"\" target=\"_blank\">"+pii+"</a></li>\n";
+                      });
+                    html_str += "    </ul>\n"+
+                                "  </div>\n"+
+                                "</div>\n";
+                    }
+                  else{
+                    html_str += "</div>\n";
+                    }
+                  $("#scidir_status").remove()
+                  }
+                else{
+                  $("#scidir_spinner").removeClass("spinner-border").addClass("bi").addClass("bi-triangle-fill")
+                  html_str = "<div class=\"accordion-item\">\n"+
+                             "  <div class=\"list-group-item list-group-item-secondary\""+
+                             "       data-bs-toggle=\"collapse\""+
+                             "        data-bs-target=\"#scidir_list\""+
+                             "        aria-expanded=\"true\""+
+                             "        aria-controls=\"scidir_list\" >Sciencedirect hits"+
+                             "    <span class=\"badge rounded-pill bg-danger\">0</span>\n"+
+                             "  </div>\n"+
+                             "</div>\n";
+                  }
+                $("#literature_accordion").append(html_str);
+                }
+    })
+  }
 function get_pubmed_info(pubmed_id){
   var form_data  = new FormData()       ;
   var target_url = "get_pubmed_info.php" ;
@@ -599,7 +647,8 @@ function check_progress(){
   var pubmed_xt_status     = $("#pubmed_xt_status").length;
   var gene2pubmed_status   = $("#gene2pubmed_status").length;
   var uniprot_status       = $("#uniprot_status").length;
-  if(pubmed_direct_status == 0 && pubmed_xt_status == 0 && gene2pubmed_status == 0 && uniprot_status == 0){
+  var scidir_status        = $("#scidir_status").length;
+  if(pubmed_direct_status == 0 && pubmed_xt_status == 0 && gene2pubmed_status == 0 && uniprot_status == 0 && scidir_status == 0){
     $("#status_dialog").modal("hide");
     }
   else{
