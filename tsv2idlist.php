@@ -1,10 +1,14 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+$uuid = uniqid();
 $tsv_file_name     = $_FILES["tsv_file"]["name"];
 $tsv_tmp_file_name = $_FILES["tsv_file"]["tmp_name"];
 $tsv_file_error    = $_FILES["tsv_file"]["error"];
 $xml_str  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
             "<tsv2idlist>\n";
-if (move_uploaded_file($tsv_tmp_file_name, "file.tsv")) {
+if (move_uploaded_file($tsv_tmp_file_name, "$uuid.tsv")) {
   $xml_str  .= "  <query_str>0</query_str>\n";
   $file_str = file_get_contents("file.tsv");
   $file_arr = explode("\n",$file_str);
@@ -28,6 +32,7 @@ if (move_uploaded_file($tsv_tmp_file_name, "file.tsv")) {
       $xml_str  .= "  </entry>\n";
     }
     $xml_str  .= "</tsv2idlist>\n";
+    unlink(realpath("$uuid.tsv"));
   }
 print $xml_str;
 ?>
