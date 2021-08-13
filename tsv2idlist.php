@@ -10,7 +10,7 @@ $xml_str  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
             "<tsv2idlist>\n";
 if (move_uploaded_file($tsv_tmp_file_name, "$uuid.tsv")) {
   $xml_str  .= "  <query_str>0</query_str>\n";
-  $file_str = file_get_contents("file.tsv");
+  $file_str = file_get_contents("$uuid.tsv");
   $file_arr = explode("\n",$file_str);
   $row_count = count($file_arr);
   $col_count = count(explode(",",$file_arr[0]));

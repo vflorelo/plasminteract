@@ -513,7 +513,10 @@ function search_elsevier(organism_name,protein_name){
                     $xml_data.find("entry").each(function (){
                       pii  = $(this).find("pii").text();
                       link = $(this).find("link").text();
-                      html_str += "    <li class=\"list-group-item\"><a href=\""+link+"\" target=\"_blank\">"+pii+"</a></li>\n";
+                      html_str += "    <li class=\"list-group-item\">\n"+
+                                  "      <a href=\""+link+"\" target=\"_blank\">"+pii+"</a>"+
+                                  "      <span class=\"bi bi-search\" onclick=\"get_scidir_info('"+pii+"')\" ></span>\n"+
+                                  "    </li>\n";
                       });
                     html_str += "    </ul>\n"+
                                 "  </div>\n"+
@@ -570,6 +573,42 @@ function get_pubmed_info(pubmed_id){
                     auth_firstname   = $(this).find("ForeName").text()
                     author_str += auth_lastname+" "+auth_firstname+", "
                   });
+                  var html_str = "<div class=\"card full\" >\n"+
+                                 "  <div class=\"card-header bg-primary text-white text-center font-weight-bold\"><h3>"+title_str+"</h3></div>\n"+
+                                 "  <div style=\"height:80%\" class=\"card-body text-justify overflowed\"><h4>"+abstract_str+"</h4></div>\n"+
+                                 "  <div style=\"height:20%\" class=\"card-footer bg-light overflowed\"><h5>"+author_str+"</h5></div>\n"+
+                                 "</div>\n";
+                }
+                $("#article_div").html(html_str)
+              }
+    })
+  }
+function get_scidir_info(pii){
+  var form_data  = new FormData()       ;
+  var target_url = "get_scidir_info.php" ;
+  form_data.append("pii", pii)  ;
+  $.ajax({
+    url: target_url,
+    dataType: 'script',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    complete: function (sciencedirect_info){
+                var scidir_xml_data = sciencedirect_info.responseText ;
+								var xml_data        = $.parseXML(scidir_xml_data);
+								$xml_data           = $(xml_data);
+                var query_str       = $xml_data.find("query_str").text();
+                var html_str = "";
+                if(query_str==0){
+                  var title_str      = $xml_data.find("title").text();
+                  var abstract_str   = $xml_data.find("abstract").text();
+                  var author_str     = ""
+                  $xml_data.find("author").each(function(){
+                    author_str += $(this).text()+" | "
+                  });
+                  author_str.replace(/ | $/, '')
                   var html_str = "<div class=\"card full\" >\n"+
                                  "  <div class=\"card-header bg-primary text-white text-center font-weight-bold\"><h3>"+title_str+"</h3></div>\n"+
                                  "  <div style=\"height:80%\" class=\"card-body text-justify overflowed\"><h4>"+abstract_str+"</h4></div>\n"+
